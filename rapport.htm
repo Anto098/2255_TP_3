@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Devoir 3 — IFT-2255</title>
+    <meta charset="utf-8"/>
+    <style>
+    body {
+        text-align: center;
+        margin: 15px;
+        background: #f7f7f7;
+    }
+
+    #body {
+        display: inline-block;
+        text-align: left;
+        font-family: 'DejaVu Sans', 'Verdana', sans-serif;
+        width: 1100px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 12px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    h2 {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        margin-left: 15px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    hr {
+        margin-top: 25px;
+        margin-bottom: 0px;
+    }
+
+    .centertable {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    th, td {
+        margin: 1px;
+        padding: 4px;
+    }
+    th {
+        text-align: center;
+        background-color: #d5dfeb;
+    }
+    td {
+        text-align: left;
+        background-color: #e7f2ff;
+    }
+
+    .usecase {
+        border-radius: 7px;
+        background-color: #e7f2ff;
+        padding: 10px;
+        margin-top: 15px;
+    }
+    .usecase:first {
+        margin-top: 0px;
+    }
+    .usecase .name {
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 3px;
+    }
+
+    pre {
+        margin: 0px;
+        font-family: 'DejaVu Sans', 'Verdana', sans-serif;
+        white-space: pre-wrap;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .diagram {
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        text-align: center;
+        font-size: 80%;
+        font-style: italic;
+    }
+    .diagram:after {
+        display: block;
+        margin-top: 2px;
+        content: "Cliquer pour ouvrir le fichier Visual Paradigm";
+    }
+
+    a {
+        color: #0710ff;
+    }
+    a:hover {
+        color: #3366ff;
+    }
+    </style>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            let html = "<ol>";
+            let i = 0;
+            for (let title of document.querySelectorAll("h1, h2")) {
+                if (title.getAttribute("x-contents") != "no") {
+                    let id = "title" + i;
+                    if (title.tagName == "H1")
+                        html += (html != "<ol>" ? "</ol></li>" : "") + "<li><a href=\"#"+id+"\"><b>" + title.innerHTML + "</b></a><ol>";
+                    else
+                        html += "<li><a href=\"#"+id+"\">" + title.innerHTML + "</a></li>"
+                    title.setAttribute("id", id)
+                    i++;
+                }
+            }
+            html += "</ol></li></ol>";
+
+            document.querySelector("#tableofcontents").innerHTML = html;
+        }
+    </script>
+  </head>
+  <body>
+  <div id="body">
+    <h1 x-contents="no">Devoir 3 &mdash; IFT-2255</h1>
+
+    <table class="centertable">
+    <tr><th>Membres</th></tr>
+    <tr><td>Maxim B.</td></tr>
+    <tr><td>Antonin R.</td></tr>
+    <tr><td>Hugo B.</td></tr>
+    </table>
+
+    <h2 x-contents="no">Table des matières</h2>
+
+    <div id="tableofcontents"><!-- Générée par window.onload --></div>
+
+
+    <hr>
+
+    <h1>Exigences &amp; Analyse</h1>
+
+    <h2>Glossaire</h2>
+    <dl>
+              <dt><b>#GYM :</b></dt>                    <dd>Centre sportif offrant des services pour différentes activités physiques</dd>
+        <br>  <dt><b>Agent :</b></dt>                   <dd>Employé de #GYM travaillant à la réception. L’agent aide les clients et les professionnels à s’inscrire à #GYM. L’agent aide également les membres à s’inscrire à des séances et les professionnels à fournir et gérer des services.</dd>
+        <br>  <dt><b>Système Central :</b></dt>         <dd>Centre de Données #GYM</dd>
+        <br>  <dt><b>Séance :</b></dt>                  <dd>Plage de temps durant laquelle un professionnel fournit un service à des clients. Le professionnel doit créer la séance et les membres doivent s’y inscrire pour y participer.</dd>
+        <br>  <dt><b>Répertoire des services :</b></dt> <dd>Utilisé par l’agent pour montrer au client l’ensemble des services offerts et les séances disponibles pour le jour même. Également utilisé pour vérifier si un membre est inscrit à un service.</dd>
+        <br>  <dt><b>Membre :</b></dt>                  <dd>Client de #GYM, a accès à toutes les et installations, peuvent s’inscrire aux séances proposées par les professionnels.</dd>
+        <br>  <dt><b>Professionnel :</b></dt>           <dd>Expert en exercice physique et en santé physique de tous genres.</dd>
+        <br>  <dt><b>Utilisateur :</b></dt>             <dd>Membre ou Professionnel.</dd>
+        <br>  <dt><b>Client :</b></dt>                  <dd>Membre (inscrit) ou client potentiel (pas encore inscrit).</dd>
+        <br>  <dt><b>Centre de Données :</b></dt>       <dd>Logiciel de #GYM. Sert à enregistrer les membres et professionnels. Sert à consulter les inscriptions à des séances. Sert à vérifier si un membre est bien inscrit à une séance.</dd>
+        <br>  <dt><b>Requête :</b></dt>                 <dd>Interrogation d’une base de données. (Dans ce projet, ce sera un fichier plutôt qu’une base de données)</dd>
+    </dl>
+
+    <h2>Diagramme de cas d'utilisation UML</h2>
+    <a class="diagram" href="./Exigence/Diagramme de cas d'utilisation.vpp"><img src="./Exigence/diagramme_cas_utilisation.png"/></a>
+
+    <h2>Détail des cas d'utilisation</h2>
+
+    <div class="usecase">
+    <div class="name"> Production des données de Transfert Électronique de Fonds </div>
+    <b>But :</b> Produire les données de TEF <br>
+    <b>Préconditions :</b> On doit être un vendredi à minuit <br>
+    <b>Acteurs :</b> RnB <br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Gym initialise le rapport TEF.
+    2. Gym envoie le rapport TEF à RnB.</pre>
+    <b>Scénarios alternatifs :</b> Aucun<br>
+    <b>Postconditions :</b> Le rapport TEF doit avoir été envoyé à RnB.
+    </div>
+
+    <div class="usecase">
+    <div class="name"> Produire le rapport comptable </div>
+    <b>But :</b> Générer le rapport comptable et l'envoyer au gérant<br>
+    <b>Préconditions :</b> Aucune <br>
+    <b>Acteurs :</b> Gérant ou Agent <br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Gérant ou l'Agent initie la production du rapport comptable.
+    2. Le rapport comptable est généré par le logiciel.
+    3. Le rapport est envoyé au gérant.</pre>
+    <b>Scénarios alternatifs :</b> Aucun<br>
+    <b>Postconditions :</b> Le rapport doit avoir été généré et envoyé au gérant.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Mise à jour utilisateur</div>
+    <b>But :</b>Mettre à jour certaines informations d'un Utilisateur<br>
+    <b>Préconditions :</b>L'Utilisateur doit exister dans le Centre de Données #GYM.<br>
+    <b>Acteurs :</b>Utilisateur, Agent<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Exécution du cas d'utilisation <i>Recherche utilisateur</i>.
+    2. L'Utilisateur existe, l'agent modifie les champs tel que spécifié par l'Utilisateur.
+    3. L'agent informe l'Utilisateur que les champs ont été modifiés</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. L'Utilisateur n'existe pas, l'agent informe l'Utilisateur qu'il n'a pas de compte.
+    3a. Le système indique qu'il y a des données manquantes, mal formatées ou invalides dans le
+           formulaire.
+           3a.1. L'Agent corrige les erreurs, en posant au besoin des questions supplémentaires à
+                    l'Utilisateur si le problème a trait au données fournies.
+           3a.2. Retour à l'étape 3 du scénario principal, ou fin du scénario.</pre>
+    <b>Postconditions :</b> Si le compte existe, les changements demandés par l'Utilisateur doivent avoir été effectués à son compte.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Suppression utilisateur</div>
+    <b>But :</b>Supprimer un Utilisateur du Centre de Données #GYM<br>
+    <b>Préconditions :</b>L'Utilisateur doit exister dans le Centre de Données #GYM<br>
+    <b>Acteurs :</b>Utilisateur, Agent<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Exécution du cas d'utilisation <i>Recherche utilisateur</i>.
+    2. L'Utilisateur existe, l'Agent supprime l'Utilisateur.
+    3. L'Agent informe l'Utilisateur que son compte a été supprimé.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. L'Agent informe l'Utilisateur qu'il n'a pas de compte chez #GYM.</pre>
+    <b>Postconditions :</b> L'Utilisateur n'est pas dans le Centre de Données #GYM.
+    </div>
+
+
+    <div class="usecase">
+    <div class="name">Création service par professionnel</div>
+    <b>But :</b> Un Professionnel veut offrir un service parmi ceux existants dans le Répertoire des Services.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Professionnel demande à l'Agent d'enregistrer un service à fournir en lui donnant son
+        numéro de professionnel.
+    2. Si le Professionnel est inscrit, l'Agent lui demande les informations suivantes et les entre
+        simultanément dans le système :
+          - Date de début du service
+          - Date de fin du service
+          - Date et heure des séances
+          - Récurrence hebdomadaire de la séance
+          - Capacité maximale
+          - Numéro du professionnel
+          - Prix du service
+          - Nom du service à offrir
+          - Commentaires (facultatif)
+    3. L'Agent soumet les données dans le système, et attend une confirmation qu'elles ont été enregistrées.
+    4. L'Agent informe le Professionnel que le service a été créé avec succès.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    1a. Le Professionnel n'est pas inscrit.
+            1a.1. L'Agent informe le Professionnel qu'il ne peut pas créer un service sans être préalablement
+                     inscrit.
+    3a. Le système indique qu'il y a des données manquantes, mal formatées ou invalides dans le
+            formulaire.
+            3a.2. Retour à l'étape 2 du scénario principal, ou fin du scénario.</pre>
+    <b>Postconditions :</b> Un nouveau service a été créé et planifié.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Annulation inscription service par membre</div>
+    <b>But :</b> Un Membre ne désire plus obtenir un service à une séance à laquelle il était inscrit.<br>
+    <b>Préconditions :</b> Le Membre doit être abonné au GYM et inscrit à la séance à laquelle il veut se désinscrire. Il doit aussi être connecté à l'application mobile.<br>
+    <b>Acteurs :</b> Membre<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Membre selectionne "Annulation inscription service" dans l'application mobile.
+    2. L'application mobile affiche les services auxquels le membre est inscrit.
+    4. Le membre selectionne le service voulu, et l'application mobile envoie une requête au centre de données GYM.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre></pre>
+    <b>Postconditions :</b> Le Membre n'est plus inscrit à la séance de laquelle il a demandé d'être désinscrit.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Annulation service par professionnel</div>
+    <b>But :</b> Un Professionnel veut retirer un service qu'il offrait.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit et avoir créé le service en question.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Professionnel donne son numéro.
+    2. Le Professionnel demande de retirer un service.
+    3. Les services proposés par le professionnel sont affichés à l'écran de l'Agent
+    4. Le Professionnel choisit un service.
+    5. L'Agent envoie la commande pour retirer le service et désincrire tous les membres qui y auraient été
+        inscrits et informe le Professionnel qu'il a été retiré avec succès.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    3a. Aucun service n'a été trouvé.
+            3a.1. L'Agent en informe le Professionnel, fin du scénario.</pre>
+    <b>Postconditions :</b> Le service n'existe plus et les membres ont été désinscrits.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Annulation d'une séance d'un service par professionnel</div>
+    <b>But :</b> Un Professionnel veut annuler une des séance d'un service qu'il offre.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit et avoir créé le service en question.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Professionnel donne son numéro.
+    2. Le Professionnel demande d'annuler une séance d'un de ses service.
+    3. Les services proposés par le professionnel sont affichés à l'écran de l'Agent
+    4. Le Professionnel choisit un service, ainsi que la date à annuler.
+    5. L'Agent demande au Professionnel de confirmer s'il désire bel et bien annuler la session.
+    6. L'Agent envoie la commande pour annuler la session, et informe le Professionnel qu'il a été retiré avec succès.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    3a. Aucun service n'a été trouvé.
+            3a.1. L'Agent en informe le Professionnel, fin du scénario.
+    6a. Il n'y a pas de session à la date indiquée
+            6a.1. L'Agent en informe le Professionnel, fin du scénario.</pre>
+    <b>Postconditions :</b> Le service n'existe plus et les membres ont été désinscrits.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Mise à jour service</div>
+    <b>But :</b> Un Professionnel veut mettre à jour les données d'un service.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit et avoir créé le service en question.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Professionnel donne son numéro.
+    2. Le Professionnel demande d'annuler une séance d'un de ses service.
+    3. Les services proposés par le professionnel sont affichés à l'écran de l'Agent
+    4. Le Professionnel choisit un service
+    5. Le Professionnel donne la nouvelle valeur d'au moins une des données suivantes :
+         - Date de début du service
+         - Date de fin du service
+         - Date et heure des séances
+         - Récurrence hebdomadaire de la séance
+         - Capacité maximale
+         - Liste des séances à venir qui sont annulées
+    6. L'Agent soumet la donnée dans le système, et attend une confirmation qu'elle a été enregistrée.
+    7. L'Agent informe le Professionnel que la donnée a été modifiée avec succès.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    4a. Aucun service n'a été trouvé.
+            2a.1. L'Agent en informe le Professionnel, fin du scénario.
+    6a. Le système indique que la(les) nouvelle(s) valeur(s) est invalide.
+            4a.1. Retour à l'étape 3 du scénario principal, ou fin du scénario.</pre>
+    <b>Postconditions :</b> Les données du service ont été mises à jour.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Recherche service</div>
+    <b>But :</b> Un Agent veut chercher un service dans la base de données à partir de l'information donnée par un Professionnel.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit et avoir créé le service en question.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le Professionnel donne son numéro.
+    2. L'Agent entre ce numéro pour obtenir la liste des services créés par ce Professionnel.
+    3. Le Professionnel donne au moins une information qui permette à l'Agent de
+        retrouver le service, soit : l'heure de la/des séance(s) associée(s), le ou les jours de la semaine
+        où elle a lieu, ou le nom du service.
+    4. L'Agent, à l'aide des informations données, trouve le service dans le système.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. Aucun service créé par ce Professionnel n'a été trouvé.
+            2a.1. L'Agent en informe le Professionnel.
+            2a.2. Répétition des étapes 1 à 2 pour vérifier qu'il n'y a pas eu d'erreur lors de l'entrée du code.
+            2a.3. En cas de succès, étape 3, sinon, fin du scénario.
+    3a. Aucun service n'a été trouvé à l'aide des informations données.
+            3a.1. L'Agent en informe le Professionnel.
+            3a.2. Retour à l'étape 2, ou fin du scénario.
+    3b. Plusieurs services ont été trouvés.
+            3b.1. L'Agent demande des informations supplémentaires pour réduire la liste à un seul service.
+            3b.2. Retour à l'étape 2.</pre>
+    <b>Postconditions :</b> Un service a été trouvé dans la base de données.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Inscription client</div>
+    <b>But :</b> Entrer les données du Client dans le Centre de Données #GYM et lui donner un Numéro d'utilisateur unique <br>
+    <b>Préconditions :</b> Le Client ne doit pas être déjà inscrit dans le système en tant que membre.<br>
+    <b>Acteurs :</b> Client, Agent<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Exécution du cas d'utilisation <i>Recherche utilisateur</i>.
+    2. Le Centre de Données valide que ce Membre n’existe pas encore et que ses informations personnelles sont
+        correctement formatées.
+    3. Le nouveau Membre est créé et un numéro unique lui est assigné.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. Le Centre de Données indique que ce Membre existe déjà et refuse l’exécution de l’opération.
+    2b. Le système indique qu'il y a des données manquantes, mal formatées ou invalides dans le
+          formulaire.
+          2b.1. L'Agent corrige les erreurs, en posant au besoin des questions supplémentaires au
+                   Membre si le problème a trait aux données fournies.
+          2b.2. Retour à l'étape 3 du scénario principal, ou fin du scénario.
+    3a. L’agent explique au client que celui-ci est déjà un Membre chez #GYM.</pre>
+    <b>Postconditions :</b> Les informations du membre doivent être enregistrées dans le Centre de Données et il doit posséder un numéro d’identification unique.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Inscription professionnel</div>
+    <b>But :</b> Entrer les données du professionnel dans le Centre de Données #GYM et lui donner un Numéro d'utilisateur unique.<br>
+    <b>Préconditions :</b> Le futur-professionnel ne doit pas être déjà enregistré dans le Centre de Données. Pour certains professionnels, ils doivent avoir une certification/diplôme/preuve qu’ils peuvent exercer ce métier.<br>
+    <b>Acteurs :</b> Professionnel, Agent<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Exécution du cas d'utilisation <i>Recherche utilisateur</i>.
+    2. Le Centre de Données valide que ce Professionnel n’existe pas encore et que ses informations
+        personnelles sont correctement formatées.
+    3. Le nouveau Professionnel est créé et un numéro unique lui est assigné.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. Le Centre de Données indique que ce Professionnel existe déjà et refuse l’exécution de l’opération.
+    2b. Le système indique qu'il y a des données manquantes, mal formatées ou invalides dans le formulaire.
+          2b.1. L'Agent corrige les erreurs, en posant au besoin des questions supplémentaires au
+                   Professionnel si le problème a trait au données fournies.
+          2b.2. Retour à l'étape 3 du scénario principal, ou fin du scénario.
+    3a. L’agent explique au client que celui-ci est déjà un Professionnel chez #GYM.</pre>
+    <b>Postconditions :</b> Les informations du Professionnel doivent être enregistrées dans le Centre de Données et il doit posséder un numéro d’identification unique.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Inscription membre à un service</div>
+    <b>But :</b> Inscrire le Membre à une séance d’un service offert par un Professionnel. <br>
+    <b>Préconditions :</b> Le Membre ne doit pas déjà être inscrit à cette même séance, le service soit exister, et la séance ne doit pas avoir été annulée.<br>
+    <b>Acteurs :</b> Membre, Agent<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. L’agent présente au Membre l’ensemble des services offerts et les séances disponibles pour
+        le jour même dans le Répertoire des Services.
+    2. Le Membre sélectionne une séance
+    3. Le Membre confirme son inscription
+    4. Le logiciel crée un enregistrement sur le disque qui contient : La Date et heure actuelles,
+        la Date à laquelle le service sera fourni, le Numéro du professionnel, le Numéro du membre,
+        le Code du service, les Commentaires (optionnels).</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    3a. Le logiciel indique que le Membre est déjà inscrit à cette séance, l’inscription est refusée</pre>
+    <b>Postconditions :</b> Le Membre est inscrit au service avec le professionnel sélectionné.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Consultation membres d'un service</div>
+    <b>But :</b> Un Professionnel veut savoir quels membres sont inscrits à une séance qu'il propose.<br>
+    <b>Préconditions :</b> Le Professionnel doit être inscrit et avoir créé le service en question.<br>
+    <b>Acteurs :</b> Professionnel, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Exécution du cas d'utilisation <i>Rechercher un service</i>.
+    2. L'Agent envoie une requête "Consulter liste d'inscriptions" au Centre de Données.
+    3. Si le Professionnel est inscrit et fournit le service en question, le Centre de Données renvoie
+        la liste des personnes inscrites à la séance.
+    4. L'Agent communique l'information au Professionnel.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    2a. L'agent n'a pas trouvé la séance dans le répertoire.
+        2a.1 L'Agent communique l'information au Professionnel, fin du scénario alternatif.
+    3a. Le numéro du Professionnel est invalide (il n'est pas inscrit ou ce n'est pas lui qui propose le service)
+      3a.1 Le Centre de Données renvoie un message d'erreur (avec la raison)
+      3a.2 L'Agent communique l'information au Professionnel, fin du scénario alternatif.</pre>
+    <b>Postconditions :</b> L'état du système ne change pas.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Vérification inscription d'un membre à une séance</div>
+    <b>But :</b> Avant que la séance ne commence, chaque membre doit se présenter à la réception pour confirmer sa présence. <br>
+    <b>Préconditions :</b> Le membre doit être inscrit au GYM, ainsi qu'à la séance à laquelle il veut participer. De plus, ni la séance ni le service ne doivent avoir été annulés.<br>
+    <b>Acteurs :</b> Membre, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le membre demande à l'agent de confirmer sa présence à une séance en particulier.
+    2. L'Agent cherche la séance dans le Répertoire des Services à fournir.
+    3. Si trouvé, l'agent demande au membre son numéro.
+    4. L'Agent envoie au Centre de Données une requête "Vérifier inscription à une séance" en incluant
+        le numéro de la séance et le numéro du membre.
+    5. Le membre est correctement inscrit à la séance, le Centre de Données renvoie le message "Validé",
+        que le logiciel affiche à l'écran.
+    6. Le logiciel créé un enregistrement sur le disque contenant les champs :
+         - Date et heure actuelles,
+         - Numéro du Professionnel,
+         - Numéro du membre,
+         - Code du service,
+         - Commentaires (facultatif)
+    7. L'Agent communique l'information au membre et lui accorde l'accès.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    3a. L'agent n'a pas trouvé la séance dans le répertoire.
+          3a.1 L'Agent communique l'information au Membre, fin du scénario alternatif.
+    5a. Le membre n'est pas correctement inscrit à la séance. Le Centre de Données renvoie le message
+          "Refusé", que le logiciel affiche à l'écran (avec des informations suplémentaires si nécessaire)
+          5a.1 L'Agent communique l'information au membre et lui refuse l'accès.</pre>
+    <b>Postconditions :</b> Si le membre a pu accéder à la séance, alors il y a l'enregistrement sur le disque
+    de cet évènement.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Entrée d'un membre dans le Gym</div>
+    <b>But :</b> Un membre arrive au GYM et se présente à la réception pour y entrer.<br>
+    <b>Préconditions :</b> Le membre doit être inscrit et avoir son numéro.<br>
+    <b>Acteurs :</b> Membre, Agent à la réception<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. Le membre communique son numéro à l'Agent pour rentrer.
+    2. L'Agent envoie au Centre de Données une requête "Vérifier inscription" en incluant
+        le numéro du membre.
+    3. Si le membre est correctement inscrit au GYM, le Centre de Données renvoie le message "Validé",
+        que le logiciel affiche à l'écran.
+    4. L'agent accorde l'accès au membre.</pre>
+    <b>Scénarios alternatifs :</b>
+    <pre>
+    3a. Le membre n'est pas correctement inscrit au GYM, le Centre de Données renvoie le message "Refusé"
+          avec la raison, et le logiciel affiche l'information à l'écran.
+          3a.1. L'Agent communique l'information au membre et lui refuse l'accès.</pre>
+    <b>Postconditions :</b> Le membre est rentré dans le GYM si il est correctement inscrit.
+    </div>
+
+    <div class="usecase">
+    <div class="name">Recherche utilisateur</div>
+    <b>But :</b> L'Agent doit pouvoir chercher un utilisateur (membre ou professionnel) dans la base de données<br>
+    <b>Préconditions :</b> L'agent doit avoir le numéro d'identification de la personne ou ses autres données personnelles<br>
+    <b>Acteurs :</b> Agent, Client ou Professionnel<br>
+    <b>Scénario principal :</b>
+    <pre>
+    1. L'Agent demande à la personne son numéro d'identification, ou ses informations personnelles
+    2. L'Agent envoie au Centre des Données une requête "Recherche utilisateur" à l'aide du numéro
+        d'identification ou des données personnelles de la personne (Nom, Prénom, Date de Naissance,
+        etc...).
+    4. Si le membre ou professionnel est déjà enregistré, le Centre des Données renvoie ses informations
+        (données personnelles, abonnement, etc...). Si la personne n'est pas encore enregistrée, le Centre
+        des Données renvoie un message "Non enregistré"</pre>
+    <b>Postconditions :</b> L'agent possède désormais l'information dont il a besoin pour une autre tâche.
+    </div>
+
+    <h2>Risques</h2>
+    <ol>
+        <li> La Base de Données est stockée sur un fichier, ce dernier pourrait être perdu/effacé
+        <li> Un des développeurs essentiels pourrait quitter l'équipe avant la création d'une documentation détaillée de certaines parties du logiciel.
+        <li> Un cas d'utilisation pourrait avoir mal été interprêté par l'équipe de développeurs, perte de temps dans son implémentation
+        <li> Usurpation d'identité : On ne vérifie pas l'identité autrement qu'avec un numéro
+        <li> Pas de techniques pour retrouver son numéro de client si jamais on le perd
+    </ol>
+
+    <h2>Exigences non-fonctionnelles</h2>
+    <ol>
+        <li> Les vérifications lorsqu'un membre veut accéder à un service ou à la salle d'entraînement, l'inscription ou la désincription d'un membre à un service et l'annulation d'un service par un professionnel ne doivent pas prendre plus de 1 ou 2 secondes.
+        <li> L'entrée des données par le/la préposé(e) lors de l'inscription d'un membre ou d'un professionnel ou de la création d'un service doit pouvoir être faite efficacement, et il ne doit pas y avoir de délai perceptible lors du passage d'un champ à un autre.
+        <li> Le système doit être suffisamment fiable pour qu'un client ne se fasse pas refuser quelque service que se soit pour lequel il a payé ; en ce sens, le système ne doit pas omettre d'enregistrer un membre qui a payé un accès à la salle ou à un service professionnel.
+        <li> Le système doit être suffisamment sécuritaire pour empêcher les intrusions non autorisées. Par exemple, une personne ne doit pas pouvoir se donner accès à la salle sans avoir payé.
+        <li> Scalabilité : fonctionne même avec beaucoup de membres, de services et de professionnels.
+    </ol>
+
+    <h2>Analyse</h2>
+    Toutes les interactions entre l’agent et le Centre de Données (qui inclut le Répertoire des Services) doivent être informatisées. Les données seront stockées dans le Centre de Données (dans une Base de Données sous forme de fichier sur un support de stockage persistant). Un Ordinateur comportant un système de stockage assez performant pour pouvoir contenir la Base de Donnée (Centre de Données). Le logiciel sera installé sur le système d’exploitation de l’ordinateur de la réception du gym. Seul l’agent interagira avec le système, et ce, par le biais d’une interface graphique via le clavier, la souris et l’écran.
+    Les parties informatisées sont : La gestion des comptes (création, suspension, modification profil) et la gestion des services (création, répertoire, inscription)
+    Les fichiers sont stockés sur les disques durs du centre.
+    <h2>Diagrammes d'activité UML</h2>
+
+    <h3>Diagramme principal</h3>
+    <a class="diagram" href="./Analyse/Diagramme principal d'activités.vpp"><img src="./Analyse/diagramme_principal.png"/></a>
+
+    <h3>Membres</h3>
+    <a class="diagram" href="./Analyse/DM1_Membre_Services.vpp"><img src="./Analyse/Membre.jpg"/></a>
+
+    <h3>Services</h3>
+    <a class="diagram" href="./Analyse/DM1_Membre_Services.vpp"><img src="./Analyse/Services.png"/></a>
+
+    <h3>Inscription séance</h3>
+    <a class="diagram" href="./Analyse/Diagramme inscription&amp;confirmation.vpp"><img src="./Analyse/diagramme_inscription_seance.png"/></a>
+
+    <h3>Confirmation séance</h3>
+    <a class="diagram" href="./Analyse/Diagramme inscription&amp;confirmation.vpp"><img src="./Analyse/diagramme_confirmation_seance.png"/></a>
+
+    <h3>Production des données TEF</h3>
+    <a class="diagram" href="./Analyse/Nouveaux diagrammes d'activité - Livraison 2.vpp"><img src="./Analyse/Production TEF.png"/></a>
+
+    <h3>Production du rapport comptable</h3>
+    <a class="diagram" href="./Analyse/Nouveaux diagrammes d'activité - Livraison 2.vpp"><img src="./Analyse/Production rapport comptable.png"/></a>
+
+
+
+    <hr>
+
+    <h1>Conception &amp; Implémentation</h1>
+
+    <h2>Diagramme de classes</h2>
+
+    <a class="diagram" href="./Conception/Diagramme classes.vpp"><img src="./Conception/Diagramme de classes.png"/></a>
+
+    <h2>Diagrammes de séquence</h2>
+
+    <h3>Diagramme de Gestion des Membres</h3>
+    <a class="diagram" href="./Conception/Gestion des Membres.vpp"><img src="./Conception/Gestion des Membres.jpg"/></a>
+    <br>
+
+    <h3>Diagramme de Gestion des Services</h3>
+    <a class="diagram" href="./Conception/GestionDesServices.vpp"><img src="./Conception/Gestion des Services.jpg"/></a>
+    <br>
+
+    <h3>Diagramme d'Inscription à une Séance</h3>
+    <a class="diagram" href="./Conception/Diagramme de séquence - Inscription à une séance.vpp"><img src="./Conception/Inscription membre à une séance.jpg"/></a>
+    <br>
+
+    <h3>Diagramme de Confirmation de Présence</h3>
+    <a class="diagram" href="./Conception/Confirmation de Présence.vpp"><img src="./Conception/Confirmation de Présence.jpg"/></a>
+    <br>
+
+    <h3>Diagramme de Procédure comptable</h3>
+    <a class="diagram" href="./Conception/Procédure comptable.vpp"><img src="./Conception/Procédure comptable.jpg"/></a>
+    <br>
+
+
+    <hr>
+    <h1>Implémentation</h1>
+
+    <h2>Changements au 3<sup>e</sup> livrable</h2>
+
+    <ul>
+        <li>Changements au diagramme de classes :
+            <ul>
+                <li><code>User</code> : nouveaux attributs <code>email</code>, <code>latestAccountingReport</code>.
+                <li><code>UserManager</code> : ajout d'un paramètre <code>email</code> aux méthodes <code>createMember</code> et <code>createProfessional</code> ; remplacement de la méthode <code>fetchUser</code> demandant une liste d'attributs par une version demandant un courriel seulement (ainsi qu'un booléen pour indiquer si l'on cherche un membre ou un professionnel).
+                <li><code>DateOperations</code> : nouvelles méthodes <code>formatDaysOfWeek</code>, <code>formatDaysOfWeekRawNames</code>, <code>getLastFridayDate</code>; retrait de l'attribut <code>daytimePattern</code> ; changement des types des paramètres des méthodes de <code>LocalDateTime</code> vers <code>LocalDate</code> ou <code>LocalTime</code> selon le cas.
+                <li><code>User.Gender</code> : nouvelle méthode statique <code>findGender</code>.
+                <li><code>ServiceManager</code> : nouvelles méthodes <code>getSessionsForToday</code>, <code>getMemberSubscriptionsForToday</code>, <code>deleteAllServicesFromProfessional</code> et <code>deleteAllSubscriptionsForMember</code> ; retrait de <code>fetchService</code>.
+                <li><code>Service</code> : nouvelles méthodes <code>getCancelledSessionsToCome</code>, <code>isMemberSubscribed</code>, <code>unsubscribeMember</code>, <code>getSessionsBetweenDates</code>, <code>deleteAllSubscriptionsForMember</code> ; retrait de <code>getNumberOfSubscription</code> et de <code>creationDateAndTime</code>.
+                <li><code>Session</code> : nouvelle classe.
+                <li><code>AccountingProcedure</code> : changement du type de retour et du type des arguments des méthodes <code>generateTefData</code> et <code>generateReport</code> ; nouvelles méthodes <code>generateMemberReport</code> et <code>generateProfessionalReport</code>.
+                <li><code>Registration</code> : retrait d'un paramètre booléen à <code>setConfirmation</code>.
+            </ul>
+        <li>Correction des diagrammes de séquence ayant fait l'objet de commentaires dans la correction du DM2 :
+            <ul><li>Gestion des membre<li>Confirmation de présence<li>Gestion des services</ul>
+        <li>Ajout du cas d'utilisation : <i>Annulation d'une séance d'un service par professionnel</i>
+        <li>Modification des cas d'utilisation :
+            <ul><li>Création d'un service par un professionnel
+                <li>Annulation de l'inscription à un service par un membre
+                <li>Annulation d'un service par un professionnel
+                <li>Mise à jour d'un service par un professionnel
+            </ul>
+    </ul>
+
+    <h2>Code &amp; Exécutable</h2>
+
+    Archive JAR : <a href="./Implémentation/Gym.jar">Gym.jar</a><br/><br/>
+
+    Script Ant : <a href="./Implémentation/build.xml">build.xml</a><br><br>
+
+    Sources :
+    <ul>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/AccountingProcedure.java" style="font-family:monospace">AccountingProcedure</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Confirmation.java" style="font-family:monospace">Confirmation</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/DateOperations.java" style="font-family:monospace">DateOperations</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Gym.java" style="font-family:monospace">Gym</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Member.java" style="font-family:monospace">Member</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Professional.java" style="font-family:monospace">Professional</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Registration.java" style="font-family:monospace">Registration</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Service.java" style="font-family:monospace">Service</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/Session.java" style="font-family:monospace">Session</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/ServiceManager.java" style="font-family:monospace">ServiceManager</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/User.java" style="font-family:monospace">User</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/UserManager.java" style="font-family:monospace">UserManager</a>
+    </ul>
+
+    Tests :
+    <ul>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/test/AccountingProcedureTest.java" style="font-family:monospace">AccountingProcedureTest</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/test/ServiceManagerTest.java" style="font-family:monospace">ServiceManagerTest</a>
+        <li><a href="./Implémentation/src/ca/umontreal/iro/ift2255/equipe13/test/UserManagerTest.java" style="font-family:monospace">UserManagerTest</a>
+    </ul>
+
+    <img src="./Tests/screenshot_tests_pass.png">
+
+    <h2>Documentation</h2>
+
+    <a href="./Implémentation/doc/index.html">Lien vers la documentation du code</a><br><br>
+
+    <a href="./Documentation/Manuel_Utilisateur.pdf">Lien vers le manuel utilisateur</a>
+
+    <h2>Collaboration</h2>
+
+    <h3>Division des tâches</h3>
+
+    <table>
+        <tr><th colspan="2">Tâche</th><th>Distribution</th></tr>
+        <tr><td rowspan="8">Mise à jour des artéfacts</td><td>Diagramme de classes</td><td>Tous</td></tr>
+        <tr><td>Diagramme de séquence gestion des membres</td><td>Antonin</td></tr>
+        <tr><td>Diagramme de séquence confirmation de présence</td><td>Antonin</td></tr>
+        <tr><td>Diagramme de séquence gestion des services</td><td>Hugo</td></tr>
+        <tr><td>Cas d'utilisation Annulation inscription à service</td><td>Hugo</td></tr>
+        <tr><td>Cas d'utilisation Annulation service par professionnel</td><td>Hugo</td></tr>
+        <tr><td>Cas d'utilisation Annulation séance par professionnel</td><td>Hugo</td></tr>
+        <tr><td>Cas d'utilisation Création service par professionnel</td><td>Antonin</td></tr>
+        <tr><td rowspan="12">Classes</td><td style="font-family:monospace">Gym</td><td>Maxim</td></tr>
+        <tr><td style="font-family:monospace">UserManager</td><td>Antonin</td></tr>
+        <tr><td style="font-family:monospace">Member</td><td>Antonin</td></tr>
+        <tr><td style="font-family:monospace">Professional</td><td>Antonin</td></tr>
+        <tr><td style="font-family:monospace">User</td><td>Antonin</td></tr>
+        <tr><td style="font-family:monospace">ServiceManager</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">Service</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">Sessions</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">Registration</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">Confirmation</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">DateOperations</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">AccountingProcedure</td><td>Maxim</td></tr>
+        <tr><td rowspan="3">Tests unitaires</td><td style="font-family:monospace">AccountingProcedureTest</td><td>Hugo</td></tr>
+        <tr><td style="font-family:monospace">ServiceManagerTest</td><td>Maxim</td></tr>
+        <tr><td style="font-family:monospace">UserManagerTest</td><td>Hugo</td></tr>
+        <tr><td rowspan="1">Configuration ANT</td><td>Diagramme de classes</td><td>Maxim</td></tr>
+        <tr><td rowspan="1">Manuel utilisateur</td><td>Diagramme de classes</td><td>Antonin</td></tr>
+        <tr><td rowspan="1">JavaDocs générés</td><td>Diagramme de classes</td><td>Maxim</td></tr>
+
+    </table>
+
+    <h3>Statistiques du dépôt</h3>
+    <img src="./statistiques_bitbucket.png"/>
+    <br>
+  </div>
+  </body>
+</html>

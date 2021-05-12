@@ -1,1 +1,1 @@
-# 2255_TP_3
+Interface en ligne de commande pour un Gym.

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="GYM" default="compile">
+    <target name="clean" description="remove intermediate files">
+        <delete dir="bin"/>
+    </target>
+    <target name="clobber" depends="clean" description="remove all artifact files">
+        <delete file="Gym.jar"/>
+    </target>
+    <target name="compile" depends="clobber" description="compile the Java source code to class files">
+        <mkdir dir="bin"/>
+        <javac srcdir="src" destdir="bin" excludes="**/test/**"/>
+    </target>
+    <target name="jar" depends="compile" description="create a Jar file for the application">
+        <jar destfile="Gym.jar">
+            <fileset dir="bin" includes="**/*.class"/>
+            <manifest>
+                <attribute name="Main-Class" value="ca.umontreal.iro.ift2255.equipe13.Gym"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="doc" description="generate documentation">
+        <javadoc sourcepath="src" destdir="doc" excludepackagenames="ca.umontreal.iro.ift2255.equipe13.test" access="private"/>
+    </target>
+</project>
